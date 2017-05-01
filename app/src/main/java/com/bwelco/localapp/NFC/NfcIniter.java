@@ -9,8 +9,10 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.Settings;
-import android.util.Log;
 
 /**
  * Created by bwelco on 2017/4/23.
@@ -77,9 +79,38 @@ public class NfcIniter {
             nfcAdapter.enableReaderMode(activity, new NfcAdapter.ReaderCallback() {
                 @Override
                 public void onTagDiscovered(Tag tag) {
-                    Log.i("admin", "tag discover");
+                    if (onTagFoundListener != null) {
+                        Message message = Message.obtain();
+                        message.obj = onTagFoundListener;
+                        new MainHandler().sendMessage(message);
+                    }
                 }
             }, NfcAdapter.FLAG_READER_NFC_A, Bundle.EMPTY);
         }
     }
+
+    public interface OnTagFoundListener {
+        void tagFound();
+    }
+
+    OnTagFoundListener onTagFoundListener;
+
+    public void setOnTagFoundListener(OnTagFoundListener listener) {
+        this.onTagFoundListener = listener;
+    }
+
+    private class MainHandler extends Handler {
+
+        public MainHandler() {
+            super(Looper.getMainLooper());
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            OnTagFoundListener onTagFoundListener = (OnTagFoundListener) msg.obj;
+            if (onTagFoundListener != null) {
+                onTagFoundListener.tagFound();
+            }
+        }
+    }
+
 }
