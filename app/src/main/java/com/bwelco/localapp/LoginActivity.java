@@ -1,6 +1,7 @@
 package com.bwelco.localapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bwelco.localapp.utils.KeyBoardManager;
 import com.bwelco.localapp.utils.LoginUtil;
+import com.bwelco.localapp.utils.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,14 +65,28 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.show();
                 LoginUtil.sendLogin(phone.getText().toString(),
                         password.getText().toString(), new LoginUtil.LoginCallBack() {
-                            @Override
-                            public void loginCallback(boolean isSucess) {
 
+                            @Override
+                            public void loginSuccess() {
+                                dialog.dismiss();
+                                ToastUtil.showMessage("登录成功");
+                                LoginUtil.saveUser(LoginActivity.this,
+                                        phone.getText().toString(),
+                                        password.getText().toString());
+                                KeyBoardManager.closeKeyboard(LoginActivity.this);
+                            }
+
+                            @Override
+                            public void loginFail() {
+                                dialog.dismiss();
+                                ToastUtil.showMessage("登录失败");
+                                KeyBoardManager.closeKeyboard(LoginActivity.this);
                             }
                         });
                 break;
             case R.id.regist:
-
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
                 break;
 
         }

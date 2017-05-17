@@ -13,4 +13,9 @@ public interface LoginService {
     @GET("login")
     Call<LoginResponse>
                sendLogin(@Query("user") String user, @Query("pass") String pass);
+
+    @GET("register")
+    Call<RegisterResponse>
+    sendRegister(@Query("user") String user, @Query("pass") String passwd,
+                 @Query("apply_info") String applyInfo);
 }

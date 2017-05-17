@@ -3,7 +3,6 @@ package com.bwelco.localapp.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.bwelco.localapp.http.LoginResponse;
 import com.bwelco.localapp.http.LoginService;
@@ -40,25 +39,32 @@ public class LoginUtil {
     }
 
 
-    public static void sendLogin(String user, String pass, LoginCallBack loginCallBack){
+    public static void sendLogin(String user, String pass, final LoginCallBack loginCallBack) {
         HttpUtil.getRetrofitInstance().create(LoginService.class)
                 .sendLogin(user, pass)
                 .enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        Log.i("admin", "response : " + response.body().success);
+                        if (response != null && response.body() != null &&
+                                response.body().success) {
+                            loginCallBack.loginSuccess();
+                        } else {
+                            loginCallBack.loginFail();
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        Log.i("admin", "fail");
+                        loginCallBack.loginFail();
                         t.printStackTrace();
                     }
                 });
     }
 
     public interface LoginCallBack{
-        void loginCallback(boolean isSucess);
+        void loginSuccess();
+
+        void loginFail();
     }
 
 }
