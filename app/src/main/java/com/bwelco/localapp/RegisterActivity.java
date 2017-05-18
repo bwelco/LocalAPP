@@ -1,15 +1,12 @@
 package com.bwelco.localapp;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
 import com.bwelco.localapp.http.LoginService;
-import com.bwelco.localapp.http.RegisterResponse;
+import com.bwelco.localapp.http.NormalResponse;
 import com.bwelco.localapp.utils.HttpUtil;
 import com.bwelco.localapp.utils.ToastUtil;
 
@@ -20,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     @Bind(R.id.register_user)
     EditText user;
@@ -37,9 +34,23 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         dialog = new ProgressDialog(this);
+    }
+
+    @Override
+    public boolean needBack() {
+        return true;
+    }
+
+    @Override
+    public String toolBarTitle() {
+        return "注册";
+    }
+
+    @Override
+    public int getLayoutID() {
+        return R.layout.activity_register;
     }
 
     @OnClick({R.id.register})
@@ -57,42 +68,25 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            dialog.setMessage("正在登录中");
+            dialog.setMessage("正在注册中");
             dialog.setCancelable(true);
             dialog.show();
 
             HttpUtil.getRetrofitInstance().create(LoginService.class)
                     .sendRegister(user.getText().toString(), passwd.getText().toString(),
                             applyInfo.getText().toString())
-                    .enqueue(new Callback<RegisterResponse>() {
+                    .enqueue(new Callback<NormalResponse>() {
                         @Override
-                        public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                        public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
+                            ToastUtil.showMessage(response.body().reason);
                             dialog.dismiss();
-                            if (response != null && response.body() != null) {
-                                if (response.body().success) {
-                                    AlertDialog.Builder builder = new
-                                            AlertDialog.Builder(RegisterActivity.this);
-                                    builder.setMessage("注册申请已经发送成功，请进入后台管理查看。");
-                                    builder.setTitle("提示");
-                                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    });
-                                    builder.show();
-                                } else {
-                                    ToastUtil.showMessage("注册失败");
-                                }
-                            } else {
-                                ToastUtil.showMessage("注册失败");
-                            }
                         }
 
                         @Override
-                        public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                        public void onFailure(Call<NormalResponse> call, Throwable t) {
                             ToastUtil.showMessage("注册失败");
                             dialog.dismiss();
+                            t.printStackTrace();
                         }
                     });
         }

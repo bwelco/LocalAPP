@@ -11,11 +11,11 @@ import retrofit2.http.Query;
 public interface LoginService {
 
     @GET("login")
-    Call<LoginResponse>
+    Call<NormalResponse>
                sendLogin(@Query("user") String user, @Query("pass") String pass);
 
     @GET("register")
-    Call<RegisterResponse>
+    Call<NormalResponse>
     sendRegister(@Query("user") String user, @Query("pass") String passwd,
                  @Query("apply_info") String applyInfo);
 }

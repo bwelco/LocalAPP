@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.bwelco.localapp.http.LoginResponse;
+import com.bwelco.localapp.http.NormalResponse;
 import com.bwelco.localapp.http.LoginService;
 
 import retrofit2.Call;
@@ -42,11 +42,11 @@ public class LoginUtil {
     public static void sendLogin(String user, String pass, final LoginCallBack loginCallBack) {
         HttpUtil.getRetrofitInstance().create(LoginService.class)
                 .sendLogin(user, pass)
-                .enqueue(new Callback<LoginResponse>() {
+                .enqueue(new Callback<NormalResponse>() {
                     @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
                         if (response != null && response.body() != null &&
-                                response.body().success) {
+                                response.body().isSuccess) {
                             loginCallBack.loginSuccess();
                         } else {
                             loginCallBack.loginFail();
@@ -54,7 +54,7 @@ public class LoginUtil {
                     }
 
                     @Override
-                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    public void onFailure(Call<NormalResponse> call, Throwable t) {
                         loginCallBack.loginFail();
                         t.printStackTrace();
                     }

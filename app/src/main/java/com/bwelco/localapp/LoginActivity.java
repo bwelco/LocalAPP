@@ -3,7 +3,6 @@ package com.bwelco.localapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @Bind(R.id.phone)
     EditText phone;
@@ -27,25 +26,40 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     @Bind(R.id.regist)
     TextView register;
-
+    @Bind(R.id.background_manager)
+    TextView backgroundManager;
 
     ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         dialog = new ProgressDialog(this);
     }
 
+    @Override
+    public boolean needBack() {
+        return false;
+    }
+
+    @Override
+    public String toolBarTitle() {
+        return "登录";
+    }
+
+
+    @Override
+    public int getLayoutID() {
+        return R.layout.activity_login;
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-    @OnClick({R.id.login, R.id.regist})
+    @OnClick({R.id.login, R.id.regist, R.id.background_manager})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -88,7 +102,11 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 break;
-
+            case R.id.background_manager:
+                Intent intent1 = new Intent(LoginActivity.this,
+                        BackgroundManagerActivity.class);
+                startActivity(intent1);
+                break;
         }
     }
 }
