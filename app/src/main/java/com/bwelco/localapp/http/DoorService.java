@@ -14,9 +14,12 @@ import retrofit2.http.Query;
 
 public interface DoorService {
 
+    String TYPE_NFC = "type_nfc";
+    String TYPE_NETWORK = "type_network";
+
     @GET("openDoor")
     Call<NormalResponse> openDoor(@Query("userName") String userName,
-                                  @Query("time") long time);
+                                  @Query("time") long time, @Query("openType") String openType);
 
     @GET("closeDoor")
     Call<NormalResponse> closrDoor(@Query("userName") String userName,

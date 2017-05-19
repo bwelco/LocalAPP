@@ -2,6 +2,7 @@ package com.bwelco.localapp;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.bwelco.localapp.adapter.DoorEventAdapter;
@@ -39,6 +40,8 @@ public class DoorEventActivity extends BaseActivity implements SwipeRefreshLayou
         doorEventList = new ArrayList<>();
         adapter = new DoorEventAdapter(this, doorEventList);
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
         refreshLayout.setOnRefreshListener(this);
         onRefresh();
     }
@@ -78,6 +81,7 @@ public class DoorEventActivity extends BaseActivity implements SwipeRefreshLayou
                             refreshLayout.setRefreshing(false);
                         }
                         ToastUtil.showMessage("刷新失败");
+                        t.printStackTrace();
                     }
                 });
     }

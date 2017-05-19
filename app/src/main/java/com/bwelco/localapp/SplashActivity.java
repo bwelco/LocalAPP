@@ -2,12 +2,10 @@ package com.bwelco.localapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.bwelco.localapp.pattern.UserConfirmPatternActivity;
 import com.bwelco.localapp.utils.LoginUtil;
@@ -26,10 +24,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility
-                    (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
 
         new Thread(new Runnable() {
             @Override

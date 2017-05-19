@@ -1,10 +1,8 @@
 package com.bwelco.localapp.pattern;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.bwelco.localapp.DefaultPasswdActivity;
 
@@ -25,10 +23,7 @@ public class SuperPatternActivity extends ConfirmPatternActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility
-                    (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+
     }
 
     @Override

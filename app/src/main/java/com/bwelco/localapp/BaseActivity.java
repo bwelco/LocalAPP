@@ -1,8 +1,8 @@
 package com.bwelco.localapp;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutID());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(toolBarTitle());
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
         setSupportActionBar(toolbar);
         if (needBack()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -31,11 +32,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                     finish();
                 }
             });
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility
-                    (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 

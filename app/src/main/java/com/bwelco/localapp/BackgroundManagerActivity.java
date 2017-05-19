@@ -34,7 +34,9 @@ public class BackgroundManagerActivity extends BaseActivity {
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.open_door) {
-
+            Intent intent = new Intent(
+                    BackgroundManagerActivity.this, DoorEventActivity.class);
+            startActivity(intent);
         } else if (id == R.id.warning) {
 
         } else if (id == R.id.user_manager) {

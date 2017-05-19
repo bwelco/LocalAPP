@@ -63,6 +63,7 @@ public class DoorControllerActicity extends BaseActivity implements NfcIniter.On
             @Override
             public void onClick(View v) {
                 //DoorController.doAction(DoorControllerActicity.this, false);
+                closeDoor();
             }
         });
 
@@ -129,7 +130,8 @@ public class DoorControllerActicity extends BaseActivity implements NfcIniter.On
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        doorService.openDoor(UserConfig.username, System.currentTimeMillis())
+                        doorService.openDoor(UserConfig.username, System.currentTimeMillis(),
+                                delay ? DoorService.TYPE_NFC : DoorService.TYPE_NETWORK)
                                 .enqueue(new Callback<NormalResponse>() {
                                     @Override
                                     public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
@@ -146,7 +148,7 @@ public class DoorControllerActicity extends BaseActivity implements NfcIniter.On
                     }
                 });
             }
-        });
+        }).start();
 
     }
 
@@ -162,6 +164,7 @@ public class DoorControllerActicity extends BaseActivity implements NfcIniter.On
                     @Override
                     public void onFailure(Call<NormalResponse> call, Throwable t) {
                         ToastUtil.showMessage("关锁失败");
+                        t.printStackTrace();
                     }
                 });
     }

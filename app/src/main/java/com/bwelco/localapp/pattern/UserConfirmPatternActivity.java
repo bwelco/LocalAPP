@@ -1,10 +1,8 @@
 package com.bwelco.localapp.pattern;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.bwelco.localapp.LoginActivity;
 import com.bwelco.localapp.sp.PatternSp;
@@ -28,10 +26,6 @@ public class UserConfirmPatternActivity extends ConfirmPatternActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         username = getIntent().getStringExtra(USERNAME_EXTRA);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility
-                    (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
     }
 
     @Override

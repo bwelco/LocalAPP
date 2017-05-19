@@ -12,4 +12,7 @@ public class DoorEventBean {
 
     @SerializedName("time")
     public long time;
+
+    @SerializedName("openType")
+    public String openType;
 }
