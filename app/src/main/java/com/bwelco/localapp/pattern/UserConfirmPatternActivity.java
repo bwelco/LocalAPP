@@ -5,13 +5,21 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.bwelco.localapp.LoginActivity;
+import com.bwelco.localapp.MyAPP;
+import com.bwelco.localapp.http.ExceptionService;
+import com.bwelco.localapp.http.NormalResponse;
 import com.bwelco.localapp.sp.PatternSp;
+import com.bwelco.localapp.utils.HttpUtil;
+import com.bwelco.localapp.utils.LoginUtil;
 
 import java.util.List;
 
 import me.zhanghai.android.patternlock.ConfirmPatternActivity;
 import me.zhanghai.android.patternlock.PatternUtils;
 import me.zhanghai.android.patternlock.PatternView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by bwelco on 2017/5/19.
@@ -38,7 +46,24 @@ public class UserConfirmPatternActivity extends ConfirmPatternActivity {
     protected boolean isPatternCorrect(List<PatternView.Cell> pattern) {
         // TODO: Get saved pattern sha1.
         String patternSha1 = PatternSp.getUserPattern(username);
-        return TextUtils.equals(PatternUtils.patternToSha1String(pattern), patternSha1);
+        boolean correct = TextUtils.equals(PatternUtils.patternToSha1String(pattern), patternSha1);
+        if (!correct) {
+            HttpUtil.getRetrofitInstance().create(ExceptionService.class)
+                    .sendLoginFailException(LoginUtil.getUserName(MyAPP.application),
+                            System.currentTimeMillis())
+                    .enqueue(new Callback<NormalResponse>() {
+                        @Override
+                        public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<NormalResponse> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+        }
+        return correct;
     }
 
     @Override

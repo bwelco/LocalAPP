@@ -8,18 +8,18 @@ import com.google.gson.annotations.SerializedName;
  * Created by bwelco on 2017/5/19.
  */
 
-public class DoorEventBean implements Comparable<DoorEventBean> {
+public class ExceptionBean implements Comparable<ExceptionBean> {
+    @SerializedName("errType")
+    public String errType;
+
     @SerializedName("userName")
     public String userName;
 
     @SerializedName("time")
     public long time;
 
-    @SerializedName("openType")
-    public String openType;
-
     @Override
-    public int compareTo(@NonNull DoorEventBean o) {
+    public int compareTo(@NonNull ExceptionBean o) {
         if (o.time < time) {
             return -1;
         } else if (o.time == time) {

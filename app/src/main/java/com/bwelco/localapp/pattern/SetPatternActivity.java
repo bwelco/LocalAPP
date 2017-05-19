@@ -14,7 +14,6 @@ import me.zhanghai.android.patternlock.PatternView;
 
 public class SetPatternActivity extends me.zhanghai.android.patternlock.SetPatternActivity {
 
-
     public static final String USERNAME_EXTRA = "userName_extra";
     private String userName;
 

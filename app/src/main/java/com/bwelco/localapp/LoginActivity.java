@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bwelco.localapp.pattern.SetPatternActivity;
 import com.bwelco.localapp.pattern.SuperPatternActivity;
+import com.bwelco.localapp.sp.PatternSp;
 import com.bwelco.localapp.utils.KeyBoardManager;
 import com.bwelco.localapp.utils.LoginUtil;
 import com.bwelco.localapp.utils.ToastUtil;
@@ -96,9 +98,14 @@ public class LoginActivity extends BaseActivity {
                                         userNameTextView.getText().toString(),
                                         password.getText().toString());
                                 KeyBoardManager.closeKeyboard(LoginActivity.this);
-                                Intent i = new Intent(LoginActivity.this, SetPatternActivity.class);
-                                i.putExtra(SetPatternActivity.USERNAME_EXTRA, userNameTextView.getText().toString());
-                                startActivityForResult(i, REQUEST_SET_LOCK);
+                                if (TextUtils.isEmpty(PatternSp.getUserPattern(LoginUtil.getUserName(MyAPP.application)))) {
+                                    Intent i = new Intent(LoginActivity.this, SetPatternActivity.class);
+                                    i.putExtra(SetPatternActivity.USERNAME_EXTRA, userNameTextView.getText().toString());
+                                    startActivityForResult(i, REQUEST_SET_LOCK);
+                                } else {
+                                    startActivity(new Intent(LoginActivity.this, DoorControllerActicity.class));
+                                    finish();
+                                }
                             }
 
                             @Override
@@ -139,7 +146,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_SET_LOCK) {
+        if (requestCode == REQUEST_SET_LOCK &&
+                resultCode == ConfirmPatternActivity.RESULT_OK) {
             startActivity(new Intent(this, DoorControllerActicity.class));
             finish();
         } else if (requestCode == REQUEST_SUPER_PATTERN &&

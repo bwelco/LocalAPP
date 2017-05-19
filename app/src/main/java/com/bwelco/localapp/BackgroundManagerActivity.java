@@ -38,7 +38,8 @@ public class BackgroundManagerActivity extends BaseActivity {
                     BackgroundManagerActivity.this, DoorEventActivity.class);
             startActivity(intent);
         } else if (id == R.id.warning) {
-
+            Intent intent = new Intent(BackgroundManagerActivity.this, ExceptionListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.user_manager) {
             Intent intent = new Intent(BackgroundManagerActivity.this,
                     UserManagerActivity.class);

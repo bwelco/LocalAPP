@@ -5,9 +5,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.bwelco.localapp.adapter.DoorEventAdapter;
-import com.bwelco.localapp.bean.DoorEventBean;
-import com.bwelco.localapp.http.DoorService;
+import com.bwelco.localapp.adapter.ExceptionListAdapter;
+import com.bwelco.localapp.bean.ExceptionBean;
+import com.bwelco.localapp.http.ExceptionService;
 import com.bwelco.localapp.utils.HttpUtil;
 import com.bwelco.localapp.utils.ToastUtil;
 
@@ -21,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DoorEventActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ExceptionListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
@@ -29,17 +29,17 @@ public class DoorEventActivity extends BaseActivity implements SwipeRefreshLayou
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    DoorEventAdapter adapter;
-    List<DoorEventBean> doorEventList;
-    DoorService doorService;
+    ExceptionListAdapter adapter;
+    List<ExceptionBean> exceptionList;
+    ExceptionService exceptionService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        doorService = HttpUtil.getRetrofitInstance().create(DoorService.class);
-        doorEventList = new ArrayList<>();
-        adapter = new DoorEventAdapter(this, doorEventList);
+        exceptionService = HttpUtil.getRetrofitInstance().create(ExceptionService.class);
+        exceptionList = new ArrayList<>();
+        adapter = new ExceptionListAdapter(this, exceptionList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -49,7 +49,7 @@ public class DoorEventActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public int getLayoutID() {
-        return R.layout.activity_door_event;
+        return R.layout.activity_exception_list;
     }
 
     @Override
@@ -59,26 +59,26 @@ public class DoorEventActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public String toolBarTitle() {
-        return "开锁事件";
+        return "异常事件";
     }
 
     @Override
     public void onRefresh() {
-        doorService.getDoorEventList()
-                .enqueue(new Callback<List<DoorEventBean>>() {
+        exceptionService.getExceptionList()
+                .enqueue(new Callback<List<ExceptionBean>>() {
                     @Override
-                    public void onResponse(Call<List<DoorEventBean>> call, Response<List<DoorEventBean>> response) {
+                    public void onResponse(Call<List<ExceptionBean>> call, Response<List<ExceptionBean>> response) {
                         if (refreshLayout.isRefreshing()) {
                             refreshLayout.setRefreshing(false);
                         }
-                        doorEventList.clear();
-                        doorEventList.addAll(response.body());
-                        Collections.sort(doorEventList);
+                        exceptionList.clear();
+                        exceptionList.addAll(response.body());
+                        Collections.sort(exceptionList);
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onFailure(Call<List<DoorEventBean>> call, Throwable t) {
+                    public void onFailure(Call<List<ExceptionBean>> call, Throwable t) {
                         if (refreshLayout.isRefreshing()) {
                             refreshLayout.setRefreshing(false);
                         }

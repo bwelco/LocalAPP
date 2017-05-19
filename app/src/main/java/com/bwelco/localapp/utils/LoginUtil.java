@@ -42,7 +42,7 @@ public class LoginUtil {
 
     public static void sendLogin(String user, String pass, final LoginCallBack loginCallBack) {
         HttpUtil.getRetrofitInstance().create(LoginService.class)
-                .sendLogin(user, pass)
+                .sendLogin(user, pass, System.currentTimeMillis())
                 .enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
