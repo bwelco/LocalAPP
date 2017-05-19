@@ -14,11 +14,13 @@ import android.view.View;
 public abstract class BaseActivity extends AppCompatActivity {
 
 
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutID());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(toolBarTitle());
         setSupportActionBar(toolbar);
         if (needBack()) {

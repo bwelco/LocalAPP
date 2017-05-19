@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.bwelco.localapp.http.NormalResponse;
+import com.bwelco.localapp.MyAPP;
+import com.bwelco.localapp.http.LoginResponse;
 import com.bwelco.localapp.http.LoginService;
 
 import retrofit2.Call;
@@ -42,29 +43,41 @@ public class LoginUtil {
     public static void sendLogin(String user, String pass, final LoginCallBack loginCallBack) {
         HttpUtil.getRetrofitInstance().create(LoginService.class)
                 .sendLogin(user, pass)
-                .enqueue(new Callback<NormalResponse>() {
+                .enqueue(new Callback<LoginResponse>() {
                     @Override
-                    public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if (response != null && response.body() != null &&
                                 response.body().isSuccess) {
+                            LoginUtil.saveUser(MyAPP.application, response.body().userName,
+                                    response.body().passwd);
+                            UserConfig.isAdmin = response.body().isAdmin;
+                            UserConfig.hasPassed = response.body().hasPassed;
+                            UserConfig.username = response.body().userName;
+                            UserConfig.passwd = response.body().passwd;
                             loginCallBack.loginSuccess();
                         } else {
-                            loginCallBack.loginFail();
+                            loginCallBack.loginFail(response.body().reason);
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<NormalResponse> call, Throwable t) {
-                        loginCallBack.loginFail();
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        loginCallBack.loginFail("连接失败，请检查服务器状态。");
                         t.printStackTrace();
                     }
                 });
     }
 
+    public static void clearUser() {
+        SharedPreferences sharedPreferences =
+                MyAPP.application.getSharedPreferences(USER_PREF, Activity.MODE_PRIVATE);
+        sharedPreferences.edit().
+                putString(USERNAME_KEY, "").putString(PASSWD_KEY, "").apply();
+    }
     public interface LoginCallBack{
         void loginSuccess();
 
-        void loginFail();
+        void loginFail(String message);
     }
 
 }

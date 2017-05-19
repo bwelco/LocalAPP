@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 public interface LoginService {
 
     @GET("login")
-    Call<NormalResponse>
+    Call<LoginResponse>
                sendLogin(@Query("user") String user, @Query("pass") String pass);
 
     @GET("register")

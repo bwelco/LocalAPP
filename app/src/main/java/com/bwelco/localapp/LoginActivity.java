@@ -1,6 +1,8 @@
 package com.bwelco.localapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bwelco.localapp.pattern.SetPatternActivity;
+import com.bwelco.localapp.pattern.SuperPatternActivity;
 import com.bwelco.localapp.utils.KeyBoardManager;
 import com.bwelco.localapp.utils.LoginUtil;
 import com.bwelco.localapp.utils.ToastUtil;
@@ -16,10 +19,12 @@ import com.bwelco.localapp.utils.ToastUtil;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.zhanghai.android.patternlock.ConfirmPatternActivity;
 
 public class LoginActivity extends BaseActivity {
 
     public static final int REQUEST_SET_LOCK = 1;
+    public static final int REQUEST_SUPER_PATTERN = 2;
 
     @Bind(R.id.phone)
     EditText userNameTextView;
@@ -97,9 +102,9 @@ public class LoginActivity extends BaseActivity {
                             }
 
                             @Override
-                            public void loginFail() {
+                            public void loginFail(String message) {
                                 dialog.dismiss();
-                                ToastUtil.showMessage("登录失败");
+                                ToastUtil.showMessage(message);
                                 KeyBoardManager.closeKeyboard(LoginActivity.this);
                             }
                         });
@@ -109,9 +114,23 @@ public class LoginActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.background_manager:
-                Intent intent1 = new Intent(LoginActivity.this,
-                        BackgroundManagerActivity.class);
-                startActivity(intent1);
+
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("提示");
+                builder.setMessage("你需要填入超级管理员密码，请向相关管理员咨询。");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(LoginActivity.this, SuperPatternActivity.class), REQUEST_SUPER_PATTERN);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
+
                 break;
         }
     }
@@ -122,6 +141,12 @@ public class LoginActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_SET_LOCK) {
             startActivity(new Intent(this, DoorControllerActicity.class));
+            finish();
+        } else if (requestCode == REQUEST_SUPER_PATTERN &&
+                resultCode == ConfirmPatternActivity.RESULT_OK) {
+            Intent intent = new Intent(LoginActivity.this,
+                    BackgroundManagerActivity.class);
+            startActivity(intent);
         }
     }
 }

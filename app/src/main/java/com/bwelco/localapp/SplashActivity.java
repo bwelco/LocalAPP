@@ -1,5 +1,6 @@
 package com.bwelco.localapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 
 import com.bwelco.localapp.pattern.UserConfirmPatternActivity;
 import com.bwelco.localapp.utils.LoginUtil;
+import com.bwelco.localapp.utils.ToastUtil;
 
 /**
  * Created by bwelco on 2017/5/19.
@@ -60,9 +62,30 @@ public class SplashActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_UNLOCK) {
-            Intent intent = new Intent(SplashActivity.this, DoorControllerActicity.class);
-            startActivity(intent);
-            finish();
+            final ProgressDialog progressDialog = new ProgressDialog(SplashActivity.this);
+            progressDialog.setMessage("正在登录中");
+
+            LoginUtil.sendLogin(LoginUtil.getUserName(SplashActivity.this),
+                    LoginUtil.getPass(SplashActivity.this), new LoginUtil.LoginCallBack() {
+                        @Override
+                        public void loginSuccess() {
+                            progressDialog.dismiss();
+                            Intent intent = new Intent(SplashActivity.this, DoorControllerActicity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void loginFail(String message) {
+                            progressDialog.dismiss();
+                            ToastUtil.showMessage(message);
+                            if (message.equals("账号不存在")) {
+                                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
         }
     }
 }

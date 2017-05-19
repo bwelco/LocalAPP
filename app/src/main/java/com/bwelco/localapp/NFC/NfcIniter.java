@@ -90,7 +90,7 @@ public class NfcIniter {
     }
 
     public interface OnTagFoundListener {
-        void tagFound();
+        void tagFound(boolean delay);
     }
 
     OnTagFoundListener onTagFoundListener;
@@ -108,7 +108,7 @@ public class NfcIniter {
         public void handleMessage(Message msg) {
             OnTagFoundListener onTagFoundListener = (OnTagFoundListener) msg.obj;
             if (onTagFoundListener != null) {
-                onTagFoundListener.tagFound();
+                onTagFoundListener.tagFound(true);
             }
         }
     }

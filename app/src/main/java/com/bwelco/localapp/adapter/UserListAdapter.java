@@ -13,12 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bwelco.localapp.MyAPP;
 import com.bwelco.localapp.R;
 import com.bwelco.localapp.UserManagerActivity;
 import com.bwelco.localapp.bean.UserBean;
 import com.bwelco.localapp.http.NormalResponse;
 import com.bwelco.localapp.http.UserManagerService;
 import com.bwelco.localapp.utils.HttpUtil;
+import com.bwelco.localapp.utils.LoginUtil;
 import com.bwelco.localapp.utils.ToastUtil;
 
 import java.util.List;
@@ -151,6 +153,10 @@ public class UserListAdapter extends ArrayAdapter<UserBean> {
                     .setItems(delete, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            if (userList.get(position).username.equals(LoginUtil.getUserName(MyAPP.application))) {
+                                ToastUtil.showMessage("你不能删除你自己");
+                                return;
+                            }
                             userManagerService.deleteUser(userList.get(position).username)
                                     .enqueue(new Callback<NormalResponse>() {
                                         @Override

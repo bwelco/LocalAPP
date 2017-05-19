@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background"
     tools:context="com.bwelco.localapp.UserManagerActivity">
 
 
@@ -27,7 +28,9 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:padding="5dp"
+            android:padding="10dp"
+            android:divider="#00000000"
+            android:dividerHeight="10dp"
             android:id="@+id/user_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

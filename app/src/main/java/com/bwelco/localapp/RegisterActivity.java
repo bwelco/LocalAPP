@@ -8,6 +8,7 @@ import android.widget.EditText;
 import com.bwelco.localapp.http.LoginService;
 import com.bwelco.localapp.http.NormalResponse;
 import com.bwelco.localapp.utils.HttpUtil;
+import com.bwelco.localapp.utils.KeyBoardManager;
 import com.bwelco.localapp.utils.ToastUtil;
 
 import butterknife.Bind;
@@ -80,10 +81,12 @@ public class RegisterActivity extends BaseActivity {
                         public void onResponse(Call<NormalResponse> call, Response<NormalResponse> response) {
                             ToastUtil.showMessage(response.body().reason);
                             dialog.dismiss();
+                            KeyBoardManager.closeKeyboard(RegisterActivity.this);
                         }
 
                         @Override
                         public void onFailure(Call<NormalResponse> call, Throwable t) {
+                            KeyBoardManager.closeKeyboard(RegisterActivity.this);
                             ToastUtil.showMessage("注册失败");
                             dialog.dismiss();
                             t.printStackTrace();
