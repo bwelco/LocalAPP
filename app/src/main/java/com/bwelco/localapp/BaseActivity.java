@@ -1,5 +1,6 @@
 package com.bwelco.localapp;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                     finish();
                 }
             });
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility
+                    (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 

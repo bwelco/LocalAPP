@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.bwelco.localapp.NFC.NfcIniter;
 
-public class MainActivity extends BaseActivity implements NfcIniter.OnTagFoundListener {
+public class DoorControllerActicity extends BaseActivity implements NfcIniter.OnTagFoundListener {
 
     ProgressDialog progressDialog;
     NfcIniter nfcIniter;
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity implements NfcIniter.OnTagFoundLi
         findViewById(R.id.close_door).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //DoorController.doAction(MainActivity.this, false);
+                //DoorController.doAction(DoorControllerActicity.this, false);
             }
         });
     }
@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity implements NfcIniter.OnTagFoundLi
 
     @Override
     public int getLayoutID() {
-        return R.layout.activity_main;
+        return R.layout.acticity_door_controller;
     }
 
     @Override

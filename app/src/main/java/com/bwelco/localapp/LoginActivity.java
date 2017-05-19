@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bwelco.localapp.pattern.SetPatternActivity;
 import com.bwelco.localapp.utils.KeyBoardManager;
 import com.bwelco.localapp.utils.LoginUtil;
 import com.bwelco.localapp.utils.ToastUtil;
@@ -18,8 +19,10 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
 
+    public static final int REQUEST_SET_LOCK = 1;
+
     @Bind(R.id.phone)
-    EditText phone;
+    EditText userNameTextView;
     @Bind(R.id.password)
     EditText password;
     @Bind(R.id.login)
@@ -64,9 +67,9 @@ public class LoginActivity extends BaseActivity {
 
         switch (view.getId()) {
             case R.id.login:
-                if (phone.length() == 0) {
-                    phone.setError("请输入账号");
-                    phone.requestFocus();
+                if (userNameTextView.length() == 0) {
+                    userNameTextView.setError("请输入账号");
+                    userNameTextView.requestFocus();
                     return;
                 } else if (password.length() == 0) {
                     password.setError("请输入密码");
@@ -77,7 +80,7 @@ public class LoginActivity extends BaseActivity {
                 dialog.setMessage("正在登录中");
                 dialog.setCancelable(true);
                 dialog.show();
-                LoginUtil.sendLogin(phone.getText().toString(),
+                LoginUtil.sendLogin(userNameTextView.getText().toString(),
                         password.getText().toString(), new LoginUtil.LoginCallBack() {
 
                             @Override
@@ -85,9 +88,12 @@ public class LoginActivity extends BaseActivity {
                                 dialog.dismiss();
                                 ToastUtil.showMessage("登录成功");
                                 LoginUtil.saveUser(LoginActivity.this,
-                                        phone.getText().toString(),
+                                        userNameTextView.getText().toString(),
                                         password.getText().toString());
                                 KeyBoardManager.closeKeyboard(LoginActivity.this);
+                                Intent i = new Intent(LoginActivity.this, SetPatternActivity.class);
+                                i.putExtra(SetPatternActivity.USERNAME_EXTRA, userNameTextView.getText().toString());
+                                startActivityForResult(i, REQUEST_SET_LOCK);
                             }
 
                             @Override
@@ -107,6 +113,15 @@ public class LoginActivity extends BaseActivity {
                         BackgroundManagerActivity.class);
                 startActivity(intent1);
                 break;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SET_LOCK) {
+            startActivity(new Intent(this, DoorControllerActicity.class));
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.bwelco.localapp;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.bwelco.localapp.utils.ToastUtil;
 
@@ -11,9 +12,12 @@ import com.bwelco.localapp.utils.ToastUtil;
 public class MyAPP extends Application {
 
 
+    public static Context application;
+
     @Override
     public void onCreate() {
         super.onCreate();
         ToastUtil.ToastMgr.builder.init(getApplicationContext());
+        application = getApplicationContext();
     }
 }
