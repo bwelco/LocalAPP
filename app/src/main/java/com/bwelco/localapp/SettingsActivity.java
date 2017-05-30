@@ -17,6 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         final EditText editText = (EditText) findViewById(R.id.ip_address);
+        editText.setText(IPConfigUtil.getIpconfig(this));
 
         findViewById(R.id.save_config).setOnClickListener(new View.OnClickListener() {
             @Override

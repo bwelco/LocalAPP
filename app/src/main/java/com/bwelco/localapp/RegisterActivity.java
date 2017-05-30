@@ -63,8 +63,22 @@ public class RegisterActivity extends BaseActivity {
                 user.setError("请输入账号");
                 user.requestFocus();
                 return;
-            } else if (passwd.length() == 0) {
+            }
+
+            if (passwd.length() == 0) {
                 passwd.setError("请输入密码");
+                passwd.requestFocus();
+                return;
+            }
+
+            if (applyInfo.length() == 0) {
+                applyInfo.setError("请填写申请理由");
+                applyInfo.requestFocus();
+                return;
+            }
+
+            if (passwd.length() < 8) {
+                passwd.setError("密码不足八位，请查正。");
                 passwd.requestFocus();
                 return;
             }

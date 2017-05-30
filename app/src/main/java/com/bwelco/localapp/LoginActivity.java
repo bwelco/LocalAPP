@@ -85,7 +85,9 @@ public class LoginActivity extends BaseActivity {
                     userNameTextView.setError("请输入账号");
                     userNameTextView.requestFocus();
                     return;
-                } else if (password.length() == 0) {
+                }
+
+                if (password.length() == 0) {
                     password.setError("请输入密码");
                     password.requestFocus();
                     return;
