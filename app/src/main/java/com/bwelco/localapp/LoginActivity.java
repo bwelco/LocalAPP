@@ -46,6 +46,13 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         dialog = new ProgressDialog(this);
+        register.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startActivity(new Intent(LoginActivity.this, SettingsActivity.class));
+                return true;
+            }
+        });
     }
 
     @Override

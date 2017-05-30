@@ -3,6 +3,8 @@ package com.bwelco.localapp;
 import android.app.Application;
 import android.content.Context;
 
+import com.bwelco.localapp.utils.HttpUtil;
+import com.bwelco.localapp.utils.IPConfigUtil;
 import com.bwelco.localapp.utils.ToastUtil;
 
 /**
@@ -19,5 +21,6 @@ public class MyAPP extends Application {
         super.onCreate();
         ToastUtil.ToastMgr.builder.init(getApplicationContext());
         application = getApplicationContext();
+        HttpUtil.setBaseUrl(IPConfigUtil.getIpconfig(getApplicationContext()));
     }
 }

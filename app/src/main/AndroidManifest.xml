@@ -29,7 +29,8 @@
         <activity android:name=".DefaultPasswdActivity" />
         <activity android:name=".pattern.SuperPatternActivity" />
         <activity android:name=".DoorEventActivity" />
-        <activity android:name=".ExceptionListActivity"></activity>
+        <activity android:name=".ExceptionListActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
